@@ -9,6 +9,7 @@ let displayBoard = () => {
     console.log("\t\t  " + board[4] + " | " + board[5] + " | " + board[6] + " ");
     console.log("\t\t-------------");
     console.log("\t\t  " + board[7] + " | " + board[8] + " | " + board[9] + " ");
+    console.log("\n");
 };
 displayBoard();
 board[1] = 'x';
@@ -21,4 +22,17 @@ board[7] = 'x';
 board[8] = 'o';
 board[9] = 'x';
 displayBoard();
+let toss = () => {
+    if (Math.round(Math.random()) == 1) {
+        console.log("Player win the toss");
+    }
+    else {
+        console.log("Computer win the toss");
+    }
+};
+toss();
+toss();
+toss();
+toss();
+toss();
 //# sourceMappingURL=app.js.map

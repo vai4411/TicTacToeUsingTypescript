@@ -27,3 +27,14 @@ board[8] = 'o';
 board[9] = 'x';
 
 displayBoard();
+
+let toss = () => {
+    if (Math.round(Math.random()) == 1) {
+        console.log("Player win the toss");
+    }
+    else {
+        console.log("Computer win the toss");
+    }
+}
+
+toss();
