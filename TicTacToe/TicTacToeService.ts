@@ -1,3 +1,5 @@
+import { exit } from "process";
+
 var readlineSync = require('readline-sync');
 let board: Array<string> = new Array<string>();
 let flag: Array<number> = new Array<number>();
@@ -70,6 +72,25 @@ class TicTacToeService {
         let position: number = Math.round(Math.random() * 8) + 1;
         this.occupyPosition(position, player);
         turn = 0;
+    }
+
+    checkWin = (value: string) => {
+        if ((board[1] == value && board[2] == value && board[3] == value) ||
+            (board[4] == value && board[5] == value && board[6] == value) ||
+            (board[7] == value && board[8] == value && board[9] == value) ||
+            (board[1] == value && board[4] == value && board[7] == value) ||
+            (board[2] == value && board[5] == value && board[8] == value) ||
+            (board[3] == value && board[6] == value && board[9] == value) ||
+            (board[1] == value && board[5] == value && board[9] == value) ||
+            (board[3] == value && board[5] == value && board[7] == value)) {
+            if (value == player) {
+                console.log("Player wins...");
+            }
+            else {
+                console.log("Computer wins...");
+            }
+            exit();
+        }
     }
 }
 
