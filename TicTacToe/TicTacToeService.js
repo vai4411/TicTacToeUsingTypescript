@@ -2,6 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.service = void 0;
 const process_1 = require("process");
+const one = 1;
+const two = 2;
+const three = 3;
+const four = 4;
+const five = 5;
+const six = 6;
+const seven = 7;
+const eight = 8;
+const nine = 9;
 var readlineSync = require('readline-sync');
 let board = new Array();
 let flag = new Array();
@@ -11,7 +20,6 @@ let chooseBoardposition = 0;
 let turn = 0;
 let count = 0;
 let win = 0;
-let winMove = 0;
 class TicTacToeService {
     constructor() {
         // set all position in board
@@ -28,11 +36,14 @@ class TicTacToeService {
         };
         // display board
         this.displayBoard = () => {
-            console.log("\n\t\t  " + board[1] + " | " + board[2] + " | " + board[3]);
-            console.log("\t\t-------------");
-            console.log("\t\t  " + board[4] + " | " + board[5] + " | " + board[6]);
-            console.log("\t\t-------------");
-            console.log("\t\t  " + board[7] + " | " + board[8] + " | " + board[9] + "\n");
+            let boardPosition = 0;
+            for (let position = 1; position <= 3; position++) {
+                console.log("\t\t -------------");
+                console.log("\t\t | " + board[one + boardPosition] + " | " + board[two + boardPosition] + " | " + board[three + boardPosition] + " | ");
+                console.log("\t\t -------------");
+                boardPosition += 3;
+            }
+            console.log("\n");
         };
         // toss
         this.toss = () => {
@@ -56,6 +67,10 @@ class TicTacToeService {
         // player input
         this.takePlayerInput = () => {
             chooseBoardposition = readlineSync.question("\nEnter position:");
+            while (chooseBoardposition > 9 || chooseBoardposition < 1) {
+                console.log("Invalid choice you need to enter position between 1-9...");
+                chooseBoardposition = readlineSync.question("\nEnter new position:");
+            }
         };
         // player occupy position
         this.playerTurnFlag = () => {
@@ -117,26 +132,37 @@ class TicTacToeService {
                     this.checkMove();
                     console.log("\nComputer choose : " + chooseBoardposition);
                 }
-                count++;
                 this.checkWin(computerChoice);
+                count++;
                 if (count > 1) {
                     this.winningMove();
                     this.blockMove();
                 }
                 if (count > 6) {
-                    this.availablePosition();
+                    this.availableCorner();
+                    this.availableCenter();
+                    this.availableSide();
                 }
             }
             console.log("\nDraw game...");
         };
         // player choose letter
-        this.playerChooseOption = () => {
+        this.playerChoice = () => {
             playerChoice = readlineSync.question("\nEnter letter X or O:");
             if (playerChoice == "X") {
                 computerChoice = "O";
             }
-            else {
+            else if (playerChoice == "O") {
                 computerChoice = "X";
+            }
+            else {
+                console.log("You Enter Invalid Choice Enter Letter X or O...");
+            }
+        };
+        // player choose wrong letter
+        this.playerChooseOption = () => {
+            while (playerChoice != "X" && playerChoice != "O") {
+                this.playerChoice();
             }
             this.takePlayerInput();
             this.playerTurnFlag();
@@ -156,16 +182,20 @@ class TicTacToeService {
             this.computerTurnFlag();
             return computerChoice;
         };
+        // test winning sequence
+        this.testCondition = (firstValue, secondValue, thirdValue, value) => {
+            let isWin = false;
+            if (board[firstValue] == value && board[secondValue] == value && board[thirdValue] == value) {
+                isWin = true;
+            }
+            return isWin;
+        };
         // winning condition
         this.winCondition = (value) => {
-            if ((board[1] == value && board[2] == value && board[3] == value) ||
-                (board[4] == value && board[5] == value && board[6] == value) ||
-                (board[7] == value && board[8] == value && board[9] == value) ||
-                (board[1] == value && board[4] == value && board[7] == value) ||
-                (board[2] == value && board[5] == value && board[8] == value) ||
-                (board[3] == value && board[6] == value && board[9] == value) ||
-                (board[1] == value && board[5] == value && board[9] == value) ||
-                (board[3] == value && board[5] == value && board[7] == value)) {
+            if (this.testCondition(one, two, three, value) || this.testCondition(four, five, six, value) ||
+                this.testCondition(seven, eight, nine, value) || this.testCondition(one, four, seven, value) ||
+                this.testCondition(two, five, eight, value) || this.testCondition(three, six, nine, value) ||
+                this.testCondition(one, five, nine, value) || this.testCondition(three, five, seven, value)) {
                 win = 1;
             }
         };
@@ -198,21 +228,48 @@ class TicTacToeService {
                 }
             }
         };
-        this.availablePosition = () => {
-            if (flag[1] == 0) {
-                console.log("\ncorner 1 is available");
+        // display available corner
+        this.availableCorner = () => {
+            let corner = 0;
+            if (flag[one] == 0) {
+                corner = one;
             }
-            if (flag[3] == 0) {
-                console.log("\ncorner 3 is available");
+            else if (flag[one] == 0) {
+                corner = one;
             }
-            if (flag[7] == 0) {
-                console.log("\ncorner 7 is available");
+            else if (flag[one] == 0) {
+                corner = one;
             }
-            if (flag[9] == 0) {
-                console.log("\ncorner 9 is available");
+            else if (flag[one] == 0) {
+                corner = one;
             }
-            if (flag[5] == 0) {
+            if (corner != 0) {
+                console.log("\ncorner " + corner + " is available");
+            }
+        };
+        // display available center
+        this.availableCenter = () => {
+            if (flag[five] == 0) {
                 console.log("\ncenter 5 is available");
+            }
+        };
+        // display available side
+        this.availableSide = () => {
+            let side = 0;
+            if (flag[two] == 0) {
+                side = two;
+            }
+            else if (flag[four] == 0) {
+                side = four;
+            }
+            else if (flag[six] == 0) {
+                side = six;
+            }
+            else if (flag[eight] == 0) {
+                side = eight;
+            }
+            if (side != 0) {
+                console.log("\nside " + side + " is available");
             }
         };
         // check for winner
@@ -226,6 +283,7 @@ class TicTacToeService {
                 }
                 else {
                     console.log("Computer wins...");
+                    process_1.exit();
                 }
             }
         };

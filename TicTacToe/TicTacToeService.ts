@@ -1,7 +1,19 @@
 import { exit } from "process";
-import { Console } from "console";
 
 var readlineSync = require('readline-sync');
+
+// constants
+const one: number = 1;
+const two: number = 2;
+const three: number = 3;
+const four: number = 4;
+const five: number = 5;
+const six: number = 6;
+const seven: number = 7;
+const eight: number = 8;
+const nine: number = 9;
+
+// variables
 let board: Array<string> = new Array<string>();
 let flag: Array<number> = new Array<number>();
 let playerChoice: string = "";
@@ -10,31 +22,33 @@ let chooseBoardposition: number = 0;
 let turn: number = 0;
 let count: number = 0;
 let win: number = 0;
-let winMove: number = 0;
 
 class TicTacToeService {
 
     // set all position in board
-    setBoardPositions = () => {
+    setBoardPositions = (): void => {
         for (let position = 1; position <= 9; position++) {
             board[position] = String(position);
         }
     }
 
     // set all flags as zero
-    setDefaultflags = () => {
+    setDefaultflags = (): void => {
         for (let position = 1; position <= 9; position++) {
             flag[position] = 0;
         }
     }
 
     // display board
-    displayBoard = () => {
-        console.log("\n\t\t  " + board[1] + " | " + board[2] + " | " + board[3]);
-        console.log("\t\t-------------");
-        console.log("\t\t  " + board[4] + " | " + board[5] + " | " + board[6]);
-        console.log("\t\t-------------");
-        console.log("\t\t  " + board[7] + " | " + board[8] + " | " + board[9] + "\n");
+    displayBoard = (): void => {
+        let boardPosition = 0;
+        for (let position = 1; position <= 3; position++) {
+            console.log("\t\t -------------");
+            console.log("\t\t | " + board[one + boardPosition] + " | " + board[two + boardPosition] + " | " + board[three + boardPosition] + " | ");
+            console.log("\t\t -------------");
+            boardPosition += 3;
+        }
+        console.log("\n");
     }
 
     // toss
@@ -61,6 +75,10 @@ class TicTacToeService {
     // player input
     takePlayerInput = (): void => {
         chooseBoardposition = readlineSync.question("\nEnter position:");
+        while (chooseBoardposition > 9 || chooseBoardposition < 1) {
+            console.log("Invalid choice you need to enter position between 1-9...");
+            chooseBoardposition = readlineSync.question("\nEnter new position:");
+        }
     }
 
     // player occupy position
@@ -82,7 +100,7 @@ class TicTacToeService {
     }
 
     // check moves of player and computer
-    checkMove = () => {
+    checkMove = (): void => {
         if (turn == 0) {
             this.takePlayerInput();
         }
@@ -116,7 +134,7 @@ class TicTacToeService {
     }
 
     // set all position on board
-    setMoves = () => {
+    setMoves = (): void => {
         this.toss();
         while (count < 8) {
             if (turn == 0) {
@@ -127,27 +145,40 @@ class TicTacToeService {
                 this.checkMove();
                 console.log("\nComputer choose : " + chooseBoardposition);
             }
-            count++;
             this.checkWin(computerChoice);
+            count++;
             if (count > 1) {
                 this.winningMove();
                 this.blockMove();
             }
             if (count > 6) {
-                this.availablePosition();
+                this.availableCorner();
+                this.availableCenter();
+                this.availableSide();
             }
         }
         console.log("\nDraw game...");
     }
 
     // player choose letter
-    playerChooseOption = (): string => {
+    playerChoice = (): void => {
         playerChoice = readlineSync.question("\nEnter letter X or O:");
         if (playerChoice == "X") {
             computerChoice = "O";
         }
-        else {
-            computerChoice = "X";
+        else
+            if (playerChoice == "O") {
+                computerChoice = "X";
+            }
+            else {
+                console.log("You Enter Invalid Choice Enter Letter X or O...");
+            }
+    }
+
+    // player choose wrong letter
+    playerChooseOption = (): string => {
+        while (playerChoice != "X" && playerChoice != "O") {
+            this.playerChoice();
         }
         this.takePlayerInput();
         this.playerTurnFlag();
@@ -169,22 +200,27 @@ class TicTacToeService {
         return computerChoice;
     }
 
+    // test winning sequence
+    testCondition = (firstValue: number, secondValue: number, thirdValue: number, value: string): boolean => {
+        let isWin: boolean = false;
+        if (board[firstValue] == value && board[secondValue] == value && board[thirdValue] == value) {
+            isWin = true;
+        }
+        return isWin;
+    }
+
     // winning condition
-    winCondition = (value: string) => {
-        if ((board[1] == value && board[2] == value && board[3] == value) ||
-            (board[4] == value && board[5] == value && board[6] == value) ||
-            (board[7] == value && board[8] == value && board[9] == value) ||
-            (board[1] == value && board[4] == value && board[7] == value) ||
-            (board[2] == value && board[5] == value && board[8] == value) ||
-            (board[3] == value && board[6] == value && board[9] == value) ||
-            (board[1] == value && board[5] == value && board[9] == value) ||
-            (board[3] == value && board[5] == value && board[7] == value)) {
+    winCondition = (value: string): void => {
+        if (this.testCondition(one, two, three, value) || this.testCondition(four, five, six, value) ||
+            this.testCondition(seven, eight, nine, value) || this.testCondition(one, four, seven, value) ||
+            this.testCondition(two, five, eight, value) || this.testCondition(three, six, nine, value) ||
+            this.testCondition(one, five, nine, value) || this.testCondition(three, five, seven, value)) {
             win = 1;
         }
     }
 
     // winning move
-    winningMove = () => {
+    winningMove = (): void => {
         for (let position = 1; position <= 9; position++) {
             if (flag[position] == 0) {
                 board[position] = playerChoice;
@@ -199,7 +235,7 @@ class TicTacToeService {
     }
 
     // blocking move
-    blockMove = () => {
+    blockMove = (): void => {
         for (let position = 1; position <= 9; position++) {
             if (flag[position] == 0) {
                 board[position] = computerChoice;
@@ -214,48 +250,72 @@ class TicTacToeService {
         }
     }
 
-    availablePosition = () => {
-        if (flag[1] == 0) {
-            console.log("\ncorner 1 is available");
+    // display available corner
+    availableCorner = (): void => {
+        let corner: number = 0;
+        if (flag[one] == 0) {
+            corner = one;
         }
-        if (flag[3] == 0) {
-            console.log("\ncorner 3 is available");
+        else
+            if (flag[one] == 0) {
+                corner = one;
+            }
+            else
+                if (flag[one] == 0) {
+            corner = one;
+                }
+                else
+                    if (flag[one] == 0) {
+                        corner = one;
+                    }
+        if (corner != 0) {
+            console.log("\ncorner " + corner +" is available");
         }
-        if (flag[7] == 0) {
-            console.log("\ncorner 7 is available");
-        }
-        if (flag[9] == 0) {
-            console.log("\ncorner 9 is available");
-        }
-        if (flag[5] == 0) {
+    }
+
+    // display available center
+    availableCenter = (): void => {
+        if (flag[five] == 0) {
             console.log("\ncenter 5 is available");
         }
-        if (flag[2] == 0) {
-            console.log("\nside 2 is available");
+    }
+
+    // display available side
+    availableSide = (): void => {
+        let side: number = 0;
+        if (flag[two] == 0) {
+            side = two;
         }
-        if (flag[4] == 0) {
-            console.log("\nside 4 is available");
-        }
-        if (flag[6] == 0) {
-            console.log("\nside 6 is available");
-        }
-        if (flag[8] == 0) {
-            console.log("\nside 8 is available");
+        else
+            if (flag[four] == 0) {
+                side = four;
+            }
+            else
+                if (flag[six] == 0) {
+                    side = six;
+                }
+                else
+                    if (flag[eight] == 0) {
+                        side = eight;
+                    }
+        if (side != 0) {
+            console.log("\nside " + side + " is available");
         }
     }
 
     // check for winner
-    checkWin = (value: string) => {
+    checkWin = (value: string): void => {
         win = 0;
         this.winCondition(value);
         if (win == 1) {
             if (value == playerChoice) {
                 console.log("Player wins...");
+                exit();
             }
             else {
                 console.log("Computer wins...");
+                exit();
             }
-            exit();
         }
     }
 }
