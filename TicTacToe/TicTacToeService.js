@@ -108,7 +108,7 @@ class TicTacToeService {
         // set all position on board
         this.setMoves = () => {
             this.toss();
-            while (count < 9) {
+            while (count < 8) {
                 if (turn == 0) {
                     this.checkMove();
                     this.checkWin(playerChoice);
@@ -123,7 +123,11 @@ class TicTacToeService {
                     this.winningMove();
                     this.blockMove();
                 }
+                if (count > 6) {
+                    this.availablePosition();
+                }
             }
+            console.log("\nDraw game...");
         };
         // player choose letter
         this.playerChooseOption = () => {
@@ -192,6 +196,20 @@ class TicTacToeService {
                     }
                     board[position] = String(position);
                 }
+            }
+        };
+        this.availablePosition = () => {
+            if (flag[1] == 0) {
+                console.log("corner 1 is available");
+            }
+            if (flag[3] == 0) {
+                console.log("corner 3 is available");
+            }
+            if (flag[7] == 0) {
+                console.log("corner 7 is available");
+            }
+            if (flag[9] == 0) {
+                console.log("corner 9 is available");
             }
         };
         // check for winner
