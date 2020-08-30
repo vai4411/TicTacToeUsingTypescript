@@ -14,16 +14,14 @@ let main = () => {
         else {
             service.checkMove();
         }
-        count++;
-        if (count > 1) {
-            service.winningMove();
-            service.blockMove();
-        }
+        service.winningMove();
+        service.blockMove();
         if (count > 6) {
             service.availableCorner();
             service.availableCenter();
             service.availableSide();
         }
+        count++;
     }
     console.log("\nDraw game...");
 }

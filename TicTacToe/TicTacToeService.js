@@ -103,6 +103,7 @@ class TicTacToeService {
                 }
                 else {
                     this.computerTurnFlag();
+                    console.log("Computer choose : " + chooseBoardPosition);
                 }
             }
             else {
@@ -119,38 +120,12 @@ class TicTacToeService {
                 }
                 else {
                     this.computerTurnFlag();
+                    console.log("Computer choose : " + chooseBoardPosition);
                 }
             }
-            console.log("\nComputer choose : " + chooseBoardPosition);
             this.checkWin(playerChoice);
             this.checkWin(computerChoice);
         };
-        // set all position on board
-        //   setMoves = (): void => {
-        //       this.toss();
-        //       while (count < 8) {
-        //           if (turn == 0) {
-        //               this.checkMove();
-        ////               this.checkWin(playerChoice);
-        //           }
-        //           else {
-        //               this.checkMove();
-        //               console.log("\nComputer choose : " + chooseBoardPosition);
-        //           }
-        ////           this.checkWin(computerChoice);
-        //           count++;
-        //           if (count > 1) {
-        //               this.winningMove();
-        //               this.blockMove();
-        //           }
-        //           if (count > 6) {
-        //               this.availableCorner();
-        //               this.availableCenter();
-        //               this.availableSide();
-        //           }
-        //       }
-        //       console.log("\nDraw game...");
-        //   }
         // player choose letter
         this.playerChoice = () => {
             playerChoice = readlineSync.question("\nEnter letter X or O:");
@@ -185,6 +160,7 @@ class TicTacToeService {
             }
             this.takeComputerInput();
             this.computerTurnFlag();
+            console.log("Computer choose : " + chooseBoardPosition);
             return computerChoice;
         };
         // test winning sequence

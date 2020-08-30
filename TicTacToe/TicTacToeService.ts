@@ -113,6 +113,7 @@ class TicTacToeService {
             }
             else {
                 this.computerTurnFlag();
+                console.log("Computer choose : " + chooseBoardPosition);
             }
         }
         else {
@@ -129,9 +130,9 @@ class TicTacToeService {
             }
             else {
                 this.computerTurnFlag();
+                console.log("Computer choose : " + chooseBoardPosition);
             }
         }
-        console.log("\nComputer choose : " + chooseBoardPosition);
         this.checkWin(playerChoice);
         this.checkWin(computerChoice);
     }
@@ -173,6 +174,7 @@ class TicTacToeService {
         }
         this.takeComputerInput();
         this.computerTurnFlag();
+        console.log("Computer choose : " + chooseBoardPosition);
         return computerChoice;
     }
 
