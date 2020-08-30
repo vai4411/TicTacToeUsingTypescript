@@ -20,7 +20,6 @@ let playerChoice: string = "";
 let computerChoice: string = "";
 let chooseBoardPosition: number = 0;
 let turn: number = 0;
-let count: number = 0;
 let win: number = 0;
 
 class TicTacToeService {

@@ -5,15 +5,10 @@ let main = () => {
     service.setBoardPositions();
     service.setDefaultflags();
     service.displayBoard();
-    let turn: number = service.toss();
+    service.toss();
     let count: number = 0;
     while (count < 8) {
-        if (turn == 0) {
-            service.checkMove();
-        }
-        else {
-            service.checkMove();
-        }
+        service.checkMove();
         service.winningMove();
         service.blockMove();
         if (count > 6) {
