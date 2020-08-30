@@ -115,7 +115,7 @@ class TicTacToeService {
                 }
                 else {
                     this.checkMove();
-                    console.log("Computer choose : " + chooseBoardposition);
+                    console.log("\nComputer choose : " + chooseBoardposition);
                 }
                 count++;
                 this.checkWin(computerChoice);
@@ -200,16 +200,19 @@ class TicTacToeService {
         };
         this.availablePosition = () => {
             if (flag[1] == 0) {
-                console.log("corner 1 is available");
+                console.log("\ncorner 1 is available");
             }
             if (flag[3] == 0) {
-                console.log("corner 3 is available");
+                console.log("\ncorner 3 is available");
             }
             if (flag[7] == 0) {
-                console.log("corner 7 is available");
+                console.log("\ncorner 7 is available");
             }
             if (flag[9] == 0) {
-                console.log("corner 9 is available");
+                console.log("\ncorner 9 is available");
+            }
+            if (flag[5] == 0) {
+                console.log("\ncenter 5 is available");
             }
         };
         // check for winner

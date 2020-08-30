@@ -227,6 +227,9 @@ class TicTacToeService {
         if (flag[9] == 0) {
             console.log("\ncorner 9 is available");
         }
+        if (flag[5] == 0) {
+            console.log("\ncenter 5 is available");
+        }
     }
 
     // check for winner
@@ -236,11 +239,11 @@ class TicTacToeService {
         if (win == 1) {
             if (value == playerChoice) {
                 console.log("Player wins...");
-                exit();
             }
             else {
                 console.log("Computer wins...");
             }
+            exit();
         }
     }
 }
