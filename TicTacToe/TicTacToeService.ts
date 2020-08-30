@@ -1,11 +1,12 @@
 import { exit } from "process";
+import { Console } from "console";
 
 var readlineSync = require('readline-sync');
 let board: Array<string> = new Array<string>();
 let flag: Array<number> = new Array<number>();
 let playerChoice: string = "";
 let computerChoice: string = "";
-let chooseboardposition: number = 0;
+let chooseBoardposition: number = 0;
 let turn: number = 0;
 let count: number = 0;
 let win: number = 0;
@@ -52,14 +53,14 @@ class TicTacToeService {
 
     // set occupied position
     occupyPosition = (letter: string): void => {
-        board[chooseboardposition] = letter;
+        board[chooseBoardposition] = letter;
         this.displayBoard();
-        flag[chooseboardposition] = 1;
+        flag[chooseBoardposition] = 1;
     }
 
     // player input
     takePlayerInput = (): void => {
-        chooseboardposition = readlineSync.question("\nEnter position:");
+        chooseBoardposition = readlineSync.question("\nEnter position:");
     }
 
     // player occupy position
@@ -70,8 +71,8 @@ class TicTacToeService {
 
     // computer input
     takeComputerInput = (): number => {
-        chooseboardposition = Math.round(Math.random() * 8) + 1;
-        return chooseboardposition;
+        chooseBoardposition = Math.round(Math.random() * 8) + 1;
+        return chooseBoardposition;
     }
 
     // computer occupy position
@@ -88,7 +89,7 @@ class TicTacToeService {
         else {
             this.takeComputerInput();
         }
-        if (flag[chooseboardposition] == 0) {
+        if (flag[chooseBoardposition] == 0) {
             if (turn == 0) {
                 this.playerTurnFlag();
             }
@@ -97,7 +98,7 @@ class TicTacToeService {
             }
         }
         else {
-            while (flag[chooseboardposition] != 0) {
+            while (flag[chooseBoardposition] != 0) {
                 if (turn == 0) {
                     this.takePlayerInput();
                 }
@@ -124,12 +125,13 @@ class TicTacToeService {
             }
             else {
                 this.checkMove();
-                console.log("Computer choose : " + chooseboardposition);
+                console.log("Computer choose : " + chooseBoardposition);
             }
             count++;
             this.checkWin(computerChoice);
-            if (count > 2) {
+            if (count > 1) {
                 this.winningMove();
+                this.blockMove();
             }
         }
     }
@@ -177,6 +179,7 @@ class TicTacToeService {
         }
     }
 
+    // winning move
     winningMove = () => {
         for (let position = 1; position <= 9; position++) {
             if (flag[position] == 0) {
@@ -184,13 +187,30 @@ class TicTacToeService {
                 this.winCondition(playerChoice);
                 if (win == 1) {
                     win = 0;
-                    console.log("\nChoose move to win : " + position);
+                    console.log("\nChoose " + position + " to win");
                 }
                 board[position] = String(position);
             }
         }
     }
 
+    // blocking move
+    blockMove = () => {
+        for (let position = 1; position <= 9; position++) {
+            if (flag[position] == 0) {
+                board[position] = computerChoice;
+                this.winCondition(computerChoice);
+                if (win == 1) {
+                    board[position] = String(position);
+                    win = 0
+                    console.log("\nChoose " + position + " for block");
+                }
+                board[position] = String(position);
+            }
+        }
+    }
+
+    // check for winner
     checkWin = (value: string) => {
         win = 0;
         this.winCondition(value);
