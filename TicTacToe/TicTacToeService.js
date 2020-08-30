@@ -10,6 +10,8 @@ let computerChoice = "";
 let chooseboardposition = 0;
 let turn = 0;
 let count = 0;
+let win = 0;
+let winMove = 0;
 class TicTacToeService {
     constructor() {
         // set all position in board
@@ -103,6 +105,7 @@ class TicTacToeService {
                 }
             }
         };
+        // set all position on board
         this.setMoves = () => {
             this.toss();
             while (count < 9) {
@@ -116,6 +119,9 @@ class TicTacToeService {
                 }
                 count++;
                 this.checkWin(computerChoice);
+                if (count > 2) {
+                    this.winningMove();
+                }
             }
         };
         // player choose letter
@@ -146,7 +152,7 @@ class TicTacToeService {
             return computerChoice;
         };
         // winning condition
-        this.checkWin = (value) => {
+        this.winCondition = (value) => {
             if ((board[1] == value && board[2] == value && board[3] == value) ||
                 (board[4] == value && board[5] == value && board[6] == value) ||
                 (board[7] == value && board[8] == value && board[9] == value) ||
@@ -155,13 +161,33 @@ class TicTacToeService {
                 (board[3] == value && board[6] == value && board[9] == value) ||
                 (board[1] == value && board[5] == value && board[9] == value) ||
                 (board[3] == value && board[5] == value && board[7] == value)) {
+                win = 1;
+            }
+        };
+        this.winningMove = () => {
+            for (let position = 1; position <= 9; position++) {
+                if (flag[position] == 0) {
+                    board[position] = playerChoice;
+                    this.winCondition(playerChoice);
+                    if (win == 1) {
+                        win = 0;
+                        console.log("Choose " + position);
+                    }
+                    board[position] = String(position);
+                }
+            }
+        };
+        this.checkWin = (value) => {
+            win = 0;
+            this.winCondition(value);
+            if (win == 1) {
                 if (value == playerChoice) {
                     console.log("Player wins...");
+                    process_1.exit();
                 }
                 else {
                     console.log("Computer wins...");
                 }
-                process_1.exit();
             }
         };
     }
