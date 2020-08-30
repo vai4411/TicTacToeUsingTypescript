@@ -230,6 +230,18 @@ class TicTacToeService {
         if (flag[5] == 0) {
             console.log("\ncenter 5 is available");
         }
+        if (flag[2] == 0) {
+            console.log("\nside 2 is available");
+        }
+        if (flag[4] == 0) {
+            console.log("\nside 4 is available");
+        }
+        if (flag[6] == 0) {
+            console.log("\nside 6 is available");
+        }
+        if (flag[8] == 0) {
+            console.log("\nside 8 is available");
+        }
     }
 
     // check for winner
