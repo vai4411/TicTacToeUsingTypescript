@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.service = void 0;
 const process_1 = require("process");
+var readlineSync = require('readline-sync');
+// constants
 const one = 1;
 const two = 2;
 const three = 3;
@@ -11,12 +13,12 @@ const six = 6;
 const seven = 7;
 const eight = 8;
 const nine = 9;
-var readlineSync = require('readline-sync');
+// variables
 let board = new Array();
 let flag = new Array();
 let playerChoice = "";
 let computerChoice = "";
-let chooseBoardposition = 0;
+let chooseBoardPosition = 0;
 let turn = 0;
 let count = 0;
 let win = 0;
@@ -60,16 +62,16 @@ class TicTacToeService {
         };
         // set occupied position
         this.occupyPosition = (letter) => {
-            board[chooseBoardposition] = letter;
+            board[chooseBoardPosition] = letter;
             this.displayBoard();
-            flag[chooseBoardposition] = 1;
+            flag[chooseBoardPosition] = 1;
         };
         // player input
         this.takePlayerInput = () => {
-            chooseBoardposition = readlineSync.question("\nEnter position:");
-            while (chooseBoardposition > 9 || chooseBoardposition < 1) {
+            chooseBoardPosition = readlineSync.question("\nEnter position:");
+            while (chooseBoardPosition > 9 || chooseBoardPosition < 1) {
                 console.log("Invalid choice you need to enter position between 1-9...");
-                chooseBoardposition = readlineSync.question("\nEnter new position:");
+                chooseBoardPosition = readlineSync.question("\nEnter new position:");
             }
         };
         // player occupy position
@@ -79,8 +81,8 @@ class TicTacToeService {
         };
         // computer input
         this.takeComputerInput = () => {
-            chooseBoardposition = Math.round(Math.random() * 8) + 1;
-            return chooseBoardposition;
+            chooseBoardPosition = Math.round(Math.random() * 8) + 1;
+            return chooseBoardPosition;
         };
         // computer occupy position
         this.computerTurnFlag = () => {
@@ -95,7 +97,7 @@ class TicTacToeService {
             else {
                 this.takeComputerInput();
             }
-            if (flag[chooseBoardposition] == 0) {
+            if (flag[chooseBoardPosition] == 0) {
                 if (turn == 0) {
                     this.playerTurnFlag();
                 }
@@ -104,7 +106,7 @@ class TicTacToeService {
                 }
             }
             else {
-                while (flag[chooseBoardposition] != 0) {
+                while (flag[chooseBoardPosition] != 0) {
                     if (turn == 0) {
                         this.takePlayerInput();
                     }
@@ -119,33 +121,36 @@ class TicTacToeService {
                     this.computerTurnFlag();
                 }
             }
+            console.log("\nComputer choose : " + chooseBoardPosition);
+            this.checkWin(playerChoice);
+            this.checkWin(computerChoice);
         };
         // set all position on board
-        this.setMoves = () => {
-            this.toss();
-            while (count < 8) {
-                if (turn == 0) {
-                    this.checkMove();
-                    this.checkWin(playerChoice);
-                }
-                else {
-                    this.checkMove();
-                    console.log("\nComputer choose : " + chooseBoardposition);
-                }
-                this.checkWin(computerChoice);
-                count++;
-                if (count > 1) {
-                    this.winningMove();
-                    this.blockMove();
-                }
-                if (count > 6) {
-                    this.availableCorner();
-                    this.availableCenter();
-                    this.availableSide();
-                }
-            }
-            console.log("\nDraw game...");
-        };
+        //   setMoves = (): void => {
+        //       this.toss();
+        //       while (count < 8) {
+        //           if (turn == 0) {
+        //               this.checkMove();
+        ////               this.checkWin(playerChoice);
+        //           }
+        //           else {
+        //               this.checkMove();
+        //               console.log("\nComputer choose : " + chooseBoardPosition);
+        //           }
+        ////           this.checkWin(computerChoice);
+        //           count++;
+        //           if (count > 1) {
+        //               this.winningMove();
+        //               this.blockMove();
+        //           }
+        //           if (count > 6) {
+        //               this.availableCorner();
+        //               this.availableCenter();
+        //               this.availableSide();
+        //           }
+        //       }
+        //       console.log("\nDraw game...");
+        //   }
         // player choose letter
         this.playerChoice = () => {
             playerChoice = readlineSync.question("\nEnter letter X or O:");

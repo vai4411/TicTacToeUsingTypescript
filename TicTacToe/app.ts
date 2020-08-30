@@ -5,7 +5,27 @@ let main = () => {
     service.setBoardPositions();
     service.setDefaultflags();
     service.displayBoard();
-    service.setMoves();
+    let turn: number = service.toss();
+    let count: number = 0;
+    while (count < 8) {
+        if (turn == 0) {
+            service.checkMove();
+        }
+        else {
+            service.checkMove();
+        }
+        count++;
+        if (count > 1) {
+            service.winningMove();
+            service.blockMove();
+        }
+        if (count > 6) {
+            service.availableCorner();
+            service.availableCenter();
+            service.availableSide();
+        }
+    }
+    console.log("\nDraw game...");
 }
 
 main();
